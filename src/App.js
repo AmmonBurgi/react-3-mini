@@ -31,35 +31,78 @@ class App extends Component {
   getVehicles() {
     // axios (GET)
     // setState with response -> vehiclesToDisplay
+    axios.get('https://joes-autos.herokuapp.com/api/vehicles')
+    .then(response => {
+      toast.success('Got all Vehicles')
+      this.setState({vehiclesToDisplay: response.data})
+    })
+    .catch(() => toast.error('Failed to get vehicles'))
   }
 
-  getPotentialBuyers() {
+  getPotentialBuyers = () => {
     // axios (GET)
     // setState with response -> buyersToDisplay
+    axios.get(`https://joes-autos.herokuapp.com/api/buyers`)
+    .then(response => {
+      toast.success('Got Potential Buyers')
+      this.setState({buyersToDisplay: response.data})
+    })
+    .catch(()=> toast.error('No potential Buyers'))
   }
 
   sellCar(id) {
     // axios (DELETE)
     // setState with response -> vehiclesToDisplay
+    axios.delete(`https://joes-autos.herokuapp.com/api/vehicles/${id}`)
+    .then(response => {
+      toast.success('Sold Car')
+      this.setState({vehiclesToDisplay: response.data.vehicles})
+    })
+    .catch(() => toast.error('Failed to sell car'))
   }
 
   filterByMake() {
     let make = this.selectedMake.value;
-
+axios.get(`https://joes-autos.herokuapp.com/api/vehicles?make=${make}`)
+.then(response => {
+  console.log(response)
+  toast.success('Make Found')
+  this.setState({vehiclesToDisplay: response.data})
+})
+.catch(() => toast.error('Make not Found'))
     // axios (GET)
     // setState with response -> vehiclesToDisplay
   }
 
   filterByColor() {
     let color = this.selectedColor.value;
-
     // axios (GET)
     // setState with response -> vehiclesToDisplay
+    axios.get(`https://joes-autos.herokuapp.com/api/vehicles?color=${color}`)
+    .then( response =>{
+      console.log(response.data)
+      toast.success('Got Color')
+      this.setState({vehiclesToDisplay: response.data})
+    })
+    .catch(()=> toast.error('Failed to get Color'))
   }
-
+  // filterByColor = () => {
+  //   let color = this.selectedColor.value;
+  //   axios.get(`https://joes-autos.herokuapp.com/api/vehicles?color=${color}`)
+  //     .then(response => {
+  //       console.log(response.data)
+  //       this.setState({vehiclesToDisplay: response.data})
+  //     })
+  // }
   updatePrice(priceChange, id) {
     // axios (PUT)
     // setState with response -> vehiclesToDisplay
+    axios.put(`https://joes-autos.herokuapp.com/api/vehicles/${id}/${priceChange}`)
+    .then(response => {
+      toast.success('Updated Price')
+      this.setState({vehiclesToDisplay: response.data.vehicles})
+    })
+    .catch(() => toast.error('Failed to update'))
   }
 
   addCar() {
@@ -73,6 +116,12 @@ class App extends Component {
 
     // axios (POST)
     // setState with response -> vehiclesToDisplay
+    axios.post('https://joes-autos.herokuapp.com/api/vehicles', newCar)
+    .then(response => {
+      toast.success('Added Car')
+      this.setState({vehiclesToDisplay: response.data.vehicles})
+    })
+    .catch(() => toast.error('Failed'))
   }
 
   addBuyer() {
@@ -89,6 +138,11 @@ class App extends Component {
   deleteBuyer(id) {
     // axios (DELETE)
     //setState with response -> buyersToDisplay
+    axios.delete(`https://joes-autos.herokuapp.com/api/buyers/${id}`)
+    .then(response => {
+      toast.success('Deleted buyer')
+      this.setState({buyersToDisplay: response.data.buyers})
+    })
   }
 
   nameSearch() {
@@ -96,13 +150,23 @@ class App extends Component {
 
     // axios (GET)
     // setState with response -> buyersToDisplay
+    axios.get(`https://joes-autos.herokuapp.com/api/buyers?name=${searchLetters}`)
+    .then(response => {
+      toast.success('Got name')
+      this.setState({buyersToDisplay: response.data})
+    })
   }
 
   byYear() {
     let year = this.searchYear.value;
-
     // axios (GET)
     // setState with response -> vehiclesToDisplay
+    axios.get(`https://joes-autos.herokuapp.com/api/vehicles?year=${year}`)
+    .then(response => {
+      toast.success('Got Year')
+      console.log(response)
+      this.setState({vehiclesToDisplay: response.data})
+    })
   }
 
   // Do not edit the code below
